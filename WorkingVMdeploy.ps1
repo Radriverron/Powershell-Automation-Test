@@ -6,14 +6,14 @@
 CSV Field Definitions.
 	Name - Name of new VM
 	Template - Name of existing template to clone
-    OSCustSpec - Name of existing OS Customiation Spec to use
-    vmHost - Name of the ESXi Host
+    	OSCustSpec - Name of existing OS Customiation Spec to use
+    	vmHost - Name of the ESXi Host
 	Datastore - Datastore placement - Can be a datastore or datastore cluster
 	IPAddress - IP Address for NIC
 	SubnetMask - Subnet Mask for NIC
 	Gateway - Gateway for NIC
 	pDNS - Primary DNS (Windows Only)
-    sDNS - Secondary DNS (Windows Only)
+        sDNS - Secondary DNS (Windows Only)
 # Header of csv: Name,Template,OSCustSpec,vmHost,Datastore,IPAddress,SubnetMask,Gateway,pDNS,sDNS
 # If you supply a csv file location it is recommended to use the name as vms2deploy.csv
 # Script execution command: .\VMDeployer.ps1 -vcenter <ip or name of Vcenter server>
