@@ -34,7 +34,7 @@ $csvfile = "$scriptDir\vms2deploy.csv"
 $logdir = $scriptDir + "\Logs\"
 $logfile = "$logdir\$scriptName" + "_" + "log.txt"
 
-# Functions for Error Logging
+# Function for Error Logging
 Function Out-Log {
     [cmdletbinding()]
     Param
@@ -112,7 +112,7 @@ Out-Log "Connected to Vcenter >> $vcenter"
 # Import variables from the csv
 $newVMs = Import-Csv -Path $csvfile
 
-# Do the below for each VM
+# Do the below tasks for each VM
 Foreach ($VM in $newVMs) {
     $Error.Clear()
     $vmName = $VM.Name
@@ -125,7 +125,7 @@ Foreach ($VM in $newVMs) {
 
     Start-Sleep -Seconds 5
 
-    # Create the new VMs
+    # Create new VMs
     $Error.clear()
     try
     {
