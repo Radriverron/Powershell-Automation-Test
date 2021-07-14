@@ -1,0 +1,68 @@
+$PSCommandPath # path of the script
+$PSScriptRoot # directory of the script
+
+# Purpose: Deploy Applications on a delivery group
+# Author: Saby Sengupta
+# date: 11 Jan 2021
+# Version 1.0
+
+# load Citrix snapin
+# asnp citrix*
+# create a log file
+$logfile = "$PSScriptRoot\$((split-path $PSCommandPath -Leaf) -replace ('.ps1', '.log'))"
+
+# create a log function. Replace Write-host calls with Log
+Function LogWrite
+{
+   Param ([string]$logstr)
+   Add-content $Logfile -value $logstr
+   Write-Host $logstr
+}
+
+# start logging
+LogWrite "Log starts on:  $(Get-Date -Format "dddd dd/MM/yyyy HH:mm")`n"
+
+# read a file with the application path list and store it in an array
+# C:\Program Files\Cerner\hnatest.exe
+$applist = Get-Content -Path $PSScriptRoot\trimlist.txt
+
+# loop through the contents and get the application name then store those in a new array
+$trimray = @()
+$applist.foreach({
+    $trimray += (Split-Path $_ -Leaf).TrimEnd(".exe") 
+    
+}) 
+LogWrite "Array of application names $trimray`n"
+
+# get the working directory for each app
+$workdir = @()
+$applist.foreach({
+    $workdir += (Split-Path $_)
+})
+LogWrite "Working directory of each app $workdir`n"
+
+# get the iconUID
+$iconray = @()
+$applist.foreach({
+    $iconray += $icod.foreach({(Get-BrokerIcon -ServerName HCAHISCTXVD100 -FileName "$_" -index 0 | New-BrokerIcon | Select-Object Uid).uid})
+})
+LogWrite "Array of iconUIDs $iconray`n"
+
+$count = 0
+while ($count -lt $applist.Length) {
+    $nn = $trimray[$count]
+    $ce = $applist[$count]
+    $ice = $iconray[$count]
+    $wdd = $workdir[$count]
+    $dd = New-BrokerApplication -Name "$nn" -CommandLineExecutable "$ce" `
+    -DesktopGroup 1 -AdminFolder 1 -ApplicationType HostedOnDesktop -MaxPerUserInstances 1 -Description "KEYWORDS: PROD" `
+    -ClientFolder "PROD" -WaitForPrinterCreation $False -Priority 0 -WorkingDirectory "$wdd" `
+    -IconUid $ice
+    LogWrite $dd
+    $count++
+}
+
+# end logging
+LogWrite "`nLog ends on:  $(Get-Date -Format "dddd dd/MM/yyyy HH:mm")"
+
+
