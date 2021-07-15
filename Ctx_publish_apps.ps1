@@ -5,10 +5,14 @@ $PSScriptRoot # directory of the script
 # Author: Saby Sengupta
 # date: 11 Jan 2021
 # Version 1.0
+# Disclaimer: 
+#	while the script has been written with every intention of minimising the potential for unintended consequences
+#	please be aware to run this scripts at your own risk
 
 # load Citrix snapin
 # asnp citrix*
 # create a log file
+
 $logfile = "$PSScriptRoot\$((split-path $PSCommandPath -Leaf) -replace ('.ps1', '.log'))"
 
 # create a log function. Replace Write-host calls with Log
