@@ -48,7 +48,7 @@ LogWrite "Working directory of each app $workdir`n"
 # get the iconUID
 $iconray = @()
 $applist.foreach({
-    $iconray += ({(Get-BrokerIcon -ServerName <insert Citrix Delivery Controller hostname> -FileName "$_" -index 0 | New-BrokerIcon | Select-Object Uid).uid})
+    $iconray += ((Get-BrokerIcon -ServerName <insert Citrix Delivery Controller hostname> -FileName "$_" -index 0 | New-BrokerIcon | Select-Object Uid).uid)
 })
 LogWrite "Array of iconUIDs $iconray`n"
 
