@@ -1,7 +1,10 @@
 <#
 # VMDeployer.ps1 - The Script can be used to deploy multiple Windows VMs from a csv file.
 # Author: Saby Sengupta
-# Version: Initial Working
+# Version: Initial Working version with Vmware ESXi 6.x
+# Disclaimer: 
+#	while the script has been written with every intention of minimising the potential for unintended consequences
+#	please be aware to run this scripts at your own risk 
 #
 CSV Field Definitions.
 	Name - Name of new VM
@@ -54,7 +57,7 @@ Function FileBrowser {
     return $FileBrowser.FileName
 }
 
-# Check the Log directory path. Create if it doesn't exist
+# Check the Log directory path. Create if one doesn't exist
 If (!(Test-Path $logDir)) { 
     New-Item -ItemType directory -Path $logDir | Out-Null
 }
