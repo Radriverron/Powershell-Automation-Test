@@ -10,9 +10,16 @@ $PSScriptRoot # directory of the script
 #	please be aware to run this scripts at your own risk
 
 # load Citrix snapin
-# asnp citrix*
-# create a log file
+asnp citrix*
 
+# get Citrix deivery controller name
+Param
+(
+    [Parameter(HelpMessage = "What is the hostname/fqdn of the Delivery controller?")]
+    [string] $ddc
+)
+
+# create a log file
 $logfile = "$PSScriptRoot\$((split-path $PSCommandPath -Leaf) -replace ('.ps1', '.log'))"
 
 # create a log function. Replace Write-host calls with Log
@@ -27,7 +34,6 @@ Function LogWrite
 LogWrite "Log starts on:  $(Get-Date -Format "dddd dd/MM/yyyy HH:mm")`n"
 
 # read a file with the application path list and store it in an array
-# C:\Program Files\Cerner\hnatest.exe
 $applist = Get-Content -Path $PSScriptRoot\<insert filename with list of apps>.txt
 
 # loop through the contents and get the application name then store those in a new array
@@ -48,10 +54,11 @@ LogWrite "Working directory of each app $workdir`n"
 # get the iconUID
 $iconray = @()
 $applist.foreach({
-    $iconray += ((Get-BrokerIcon -ServerName <insert Citrix Delivery Controller hostname> -FileName "$_" -index 0 | New-BrokerIcon | Select-Object Uid).uid)
+    $iconray += ((Get-BrokerIcon -ServerName "$ddc" -FileName "$_" -index 0 | New-BrokerIcon | Select-Object Uid).uid)
 })
 LogWrite "Array of iconUIDs $iconray`n"
 
+# create the applications. The desktopGroupUid and AdminfolderUid can be predetermined or can be queried before this step.
 $count = 0
 while ($count -lt $applist.Length) {
     $nn = $trimray[$count]
