@@ -24,7 +24,7 @@ LogWrite "Log starts on:  $(Get-Date -Format "dddd dd/MM/yyyy HH:mm")`n"
 
 # read a file with the application path list and store it in an array
 # C:\Program Files\Cerner\hnatest.exe
-$applist = Get-Content -Path $PSScriptRoot\trimlist.txt
+$applist = Get-Content -Path $PSScriptRoot\<insert filename with list of apps>.txt
 
 # loop through the contents and get the application name then store those in a new array
 $trimray = @()
@@ -44,7 +44,7 @@ LogWrite "Working directory of each app $workdir`n"
 # get the iconUID
 $iconray = @()
 $applist.foreach({
-    $iconray += $icod.foreach({(Get-BrokerIcon -ServerName HCAHISCTXVD100 -FileName "$_" -index 0 | New-BrokerIcon | Select-Object Uid).uid})
+    $iconray += $icod.foreach({(Get-BrokerIcon -ServerName <insert Citrix Delivery Controller hostname> -FileName "$_" -index 0 | New-BrokerIcon | Select-Object Uid).uid})
 })
 LogWrite "Array of iconUIDs $iconray`n"
 
